@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <title>UGD VUE GAME</title>
+  </head>
+  <body>
+    <!-- vue JS -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <header class="card-header" style="padding-bottom: 370px">
+      <h1 class="text-center m-5">Ayo Menebak Angka Gaesss</h1>
+      <div class="m-5">
+        1. Punya kesempatan 4 kali tebak <br />
+        2. Nomor hanya 1-10 <br />
+        3. Kamu bisa <span class="text-danger">mulai ulang</span> ketika 4 kali
+        salah tebak nomor
+      </div>
+      <div id="app" class="m-5">
+        <div class="mb-3 mt-3">
+          <p>Game tebak nomor antara 1-10:</p>
+          <input
+            type="number"
+            v-model="userInput"
+            v-if="start==true"
+            class="form-control"
+            placeholder="Input nomor tebakan kamu ya! lalu tekan tebak :)"
+          />
+        </div>
+        <div>
+          <button
+            type="button"
+            v-if="count>0 && count<5 && start==true"
+            v-on:click.prevent="increment"
+            class="btn btn-primary"
+          >
+            Tebak
+          </button>
+          <button
+            type="button"
+            v-if="count==0 && start==false"
+            v-on:click.prevent="mulai"
+            class="btn btn-primary"
+          >
+            Start
+          </button>
+
+          <button
+            type="button"
+            v-if="count==5 || betul==true"
+            onclick="myalert()"
+            v-on:click.prevent="gagal"
+            class="btn btn-danger"
+          >
+            Mulai Ulang
+          </button>
+        </div>
+        <div>
+          <p v-if="betul==true">Angka yang kamu tebak {{randomNumber}}</p>
+          <p v-if="count>=1">Jumlah kamu tebak {{count-1}}</p>
+          <!-- <div>{{ checkNumber() }}</div> -->
+        </div>
+      </div>
+    </header>
+    <footer class="card-footer">
+      <div id="foot" class="text-center">
+        <p>{{ nama }} || {{npm}} || {{kelas}}</p>
+      </div>
+    </footer>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+  <script>
+    function myalert() {
+      alert("Mulai Ulang !!");
+    }
+
+    const { createApp } = Vue;
+    createApp({
+      data() {
+        return {
+          userInput: null,
+          randomNumber: 0,
+          message: "",
+          count: 0,
+          start: false,
+          betul: false,
+        };
+      },
+      methods: {
+        checkNumber() {
+          if (this.userInput == this.randomNumber) {
+            return (this.message = "Kamu menebaknya BENAR!");
+          } else if (this.userInput > this.randomNumber) {
+            return (this.message = "Kamu menebaknya terlalu besar!");
+          } else if (this.userInput < this.randomNumber) {
+            return (this.message = "Kamu menebaknya terlalu kecil!");
+          } else {
+            return (this.message = "Mulai lah menebak");
+          }
+        },
+        increment() {
+          this.count++;
+          // this.start = false;
+          if (this.count == 6) {
+            this.count = 0;
+            return alert("Kesempatan kamu sudah habis!");
+          } else if (this.userInput == this.randomNumber) {
+            this.betul = true;
+            this.start = false;
+            return alert("YEAYY BENAR!");
+          }
+        },
+        mulai() {
+          this.start = true;
+          this.count = 1;
+          this.randomNumber = Math.floor(Math.random() * 10) + 1;
+        },
+        gagal() {
+          this.start = false;
+          this.count = 0;
+          this.betul = false;
+          this.randomNumber = Math.floor(Math.random() * 10) + 1;
+        },
+        // decrementToZero() {
+        //   if (this.count == 4) {
+        //     // this.start = true;
+        //     this.count = 0;
+        //   }
+        // },
+      },
+      // watch: {
+      //   userInput() {
+      //     this.count++;
+      //     if (this.count == 4) {
+      //       this.message = "You lose!";
+      //     }
+      //   },
+      // },
+    }).mount("#app");
+
+    const { createFooter } = Vue;
+    createApp({
+      data() {
+        return {
+          nama: "I Putu Agestya Pramana",
+          npm: "200710994",
+          kelas: "Pemrograman Web B",
+        };
+      },
+    }).mount("#foot");
+  </script>
+</html>
