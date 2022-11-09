@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Raleway&display=swap");
+
+      * {
+        box-sizing: border-box;
+        font-family: Raleway;
+      }
+
+      html,
+      body {
+        font-family: Raleway;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      header {
+        background: #5f30e2;
+        padding: 16px;
+        color: white;
+      }
+
+      .footer {
+        background: #5f30e2;
+        padding: 16px;
+        color: white;
+      }
+
+      .wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .wrapper .container {
+        width: 1024px;
+        border-radius: 8px;
+        margin: 16px;
+        background: white;
+        padding: 16px;
+        flex-grow: 1;
+        height: fit-content;
+      }
+
+      .item {
+        border-radius: 16px;
+        margin-top: 16px;
+        padding: 12px 24px 12px 24px;
+        background: white;
+        display: flex;
+        align-items: center;
+      }
+
+      .item > .inner h2 {
+        margin-bottom: unset;
+      }
+
+      .item > .inner p {
+        margin-top: 5px;
+      }
+
+      .form {
+        display: flex;
+        padding: 16px;
+        flex-direction: column;
+        height: 300px;
+        border-radius: 16px;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-group label {
+        margin-bottom: 4px;
+        font-size: 18;
+        font-weight: lighter;
+      }
+
+      .inputDesign {
+        font-family: Raleway;
+        border: 2px solid #9475ea;
+        border-radius: 8px;
+        padding: 16px;
+        box-sizing: border-box;
+        margin-bottom: 8px;
+        font-size: 24px;
+      }
+
+      .btn-submit {
+        width: fit-content;
+        border: none;
+        background-color: white;
+        font-family: Raleway;
+        border-radius: 16px;
+        padding: 12px 24px;
+        border: 2px solid #5f30e2;
+        color: black;
+        font-size: 24px;
+        margin-top: auto;
+        align-self: flex-end;
+        cursor: pointer;
+      }
+
+      .btn-reset {
+        width: fit-content;
+        border: none;
+        background-color: white;
+        font-family: Raleway;
+        border-radius: 16px;
+        padding: 12px 24px;
+        border: 2px solid #e23030;
+        color: black;
+        font-size: 24px;
+        margin-top: auto;
+        align-self: flex-end;
+        cursor: pointer;
+      }
+
+      .btn-submit:hover {
+        background: #5f30e2;
+        color: white;
+      }
+
+      .btn-reset:hover {
+        background: #e23030;
+        color: white;
+      }
+
+      inputDesign,
+      .btn-submit:focus,
+      .btn-reset:focus {
+        outline: none;
+      }
+
+      .form-title {
+        margin: auto 0;
+      }
+
+      @media only screen and (max-width: 1024px) {
+        .wrapper {
+          margin: 0;
+        }
+
+        .wrapper .container {
+          width: 100%;
+        }
+
+        .list-item {
+          width: 90%;
+        }
+
+        .form {
+          width: 100%;
+        }
+      }
+    </style>
+
+    <title>TUGAS TO DO LIST</title>
+  </head>
+  <body>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <header>
+      <h1 class="text-center">Todo List</h1>
+    </header>
+    <div>
+      <div id="app" class="wrapper">
+        <div class="container mt-3 bg-white">
+          <div class="mb-2 mt-3">
+            <div class="card">
+              <div class="card-header bg-white text-center">
+                <h4>List sudah dibuat To Do List</h4>
+              </div>
+
+              <div class="card-body" v-for="(item,index) in list" :key="index">
+                <button
+                  @click="deleteItem(index)"
+                  class="btn btn-danger"
+                  style="float: right"
+                >
+                  Delete
+                </button>
+                <h5>
+                  <span
+                    v-if="item.Prioritas == 'Penting'"
+                    class="badge bg-danger"
+                  >
+                    {{ item.Prioritas }}</span
+                  >
+                  <span
+                    v-if="item.Prioritas == 'Biasa'"
+                    class="badge bg-warning"
+                  >
+                    {{ item.Prioritas }}</span
+                  >
+                  <span
+                    v-if="item.Prioritas == 'Tidak Penting'"
+                    class="badge bg-info"
+                  >
+                    {{ item.Prioritas }}</span
+                  >
+                  {{ item.namaJudulToDo }}
+                </h5>
+                <p>{{ item.inputCatatan }}</p>
+                <hr />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container mt-3 bg-white">
+          <div class="mb-2 mt-3">
+            <div class="card">
+              <div class="card-body">
+                <label for="guess">Nama To Do:</label>
+                <br />
+                <input
+                  v-model="namaJudulToDo"
+                  type="text"
+                  class="form-control inputDesign"
+                  id="namaToDo"
+                  placeholder="Masukkan nama to do"
+                  name="guess"
+                  required
+                />
+
+                <br />
+                <label for="prioritas">Prioritas:</label>
+                <br />
+                <select
+                  v-model="Prioritas"
+                  class="form-select inputDesign"
+                  id="prioritas"
+                  name="prioritas"
+                  type="prioritasPenting"
+                  required
+                >
+                  <option value="" disabled selected hidden>
+                    Choose Priorotas...
+                  </option>
+                  <option v-for="option in options" :value="option.value">
+                    {{ option.text }}
+                  </option>
+                </select>
+
+                <br />
+                <label for="guess">Catatan:</label>
+                <br />
+                <textarea
+                  v-model="inputCatatan"
+                  class="form-control inputDesign"
+                  rows="5"
+                  id="catatan"
+                  name="text"
+                  placeholder="Masukkan catatan penting"
+                  required
+                ></textarea>
+                <br />
+                <button @click="submit" class="btn-submit">Submit</button>
+                <button @click="reset" class="btn-reset" style="float: right">
+                  Reset
+                </button>
+              </div>
+            </div>
+          </div>
+          <br />
+        </div>
+      </div>
+    </div>
+    <div class="footer text-center">
+      <p>{{ nama }} || {{ npm }} || {{ kelas }}</p>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+  <script>
+    const { createApp } = Vue;
+    createApp({
+      data() {
+        return {
+          namaJudulToDo: null,
+          Prioritas: "",
+          inputCatatan: null,
+
+          options: [
+            { text: "Penting", value: "Penting" },
+            { text: "Biasa", value: "Biasa" },
+            { text: "Tidak Penting", value: "Tidak Penting" },
+          ],
+
+          list: [],
+        };
+      },
+      methods: {
+        submit() {
+          if (
+            this.namaJudulToDo == "" ||
+            this.Prioritas == "" ||
+            this.inputCatatan == ""
+          ) {
+            alert("Isi data dulu yok bisa yok!!!!!");
+          } else {
+            this.list.push({
+              namaJudulToDo: this.namaJudulToDo,
+              inputCatatan: this.inputCatatan,
+              Prioritas: this.Prioritas,
+            });
+            this.namaJudulToDo = "";
+            this.inputCatatan = "";
+            this.Prioritas = "";
+          }
+        },
+        reset() {
+          (this.namaJudulToDo = ""),
+            (this.inputCatatan = ""),
+            (this.Prioritas = "");
+        },
+        deleteItem(index) {
+          this.list.splice(index, 1);
+        },
+      },
+    }).mount("#app");
+
+    const { createFooter } = Vue;
+    createApp({
+      data() {
+        return {
+          nama: "I Putu Agestya Pramana",
+          npm: "200710994",
+          kelas: "Pemrograman Web B",
+        };
+      },
+    }).mount(".footer");
+  </script>
+</html>
